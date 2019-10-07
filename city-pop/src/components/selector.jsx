@@ -13,16 +13,16 @@ class Selector extends Component {
     return (
       <div>
         <button
-          onClick={() => this.onCityClick()}
+          onClick={() => this.props.onSelection("City")}
           className="btn btn-primary btn-lg mr-lg-2"
         >
-          Search by city
+          Search by City
         </button>
         <button
-          onClick={() => this.onCountryClick()}
+          onClick={() => this.props.onSelection("Country")}
           className="btn btn-primary btn-lg ml-lg-2"
         >
-          Search by country
+          Search by Country
         </button>
       </div>
     );
