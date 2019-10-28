@@ -5,8 +5,8 @@ import Search from "./components/search";
 
 class App extends Component {
   state = {
-    Selector,
-    Search
+    isSearching: false,
+    searchType: ""
   };
 
   constructor(props) {
@@ -15,25 +15,23 @@ class App extends Component {
   }
 
   handleSelection = searchBy => {
-    console.log("Search by " + searchBy);
     this.setState({ isSearching: true });
+    this.setState({ searchType: searchBy });
   };
 
-  render() {
-    const isSearching = this.state.isSearching;
+  renderContent() {
+    if (!this.state.isSearching)
+      return <Selector onSelection={this.handleSelection} />;
+    else return <Search searchType={this.state.searchType} />;
+  }
 
-    let content = null;
-    if (!isSearching) {
-      content = <Selector onSelection={this.handleSelection} />;
-    } else {
-      content = <Search>searchType</Search>;
-    }
+  render() {
     return (
       <React.Fragment>
         <div className="App">
           <header className="App-header">
             <h1>CityPop</h1>
-            {content}
+            {this.renderContent()}
           </header>
         </div>
       </React.Fragment>
