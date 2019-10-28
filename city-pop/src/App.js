@@ -3,6 +3,7 @@ import "./App.css";
 import Selector from "./components/selector";
 import Search from "./components/search";
 import City from "./components/city";
+import Country from "./components/country";
 
 class App extends Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class App extends Component {
       searchType: "",
       error: null,
       isLoaded: false,
-      items: {}
+      items: []
     };
     this.baseUrl = "http://api.geonames.org/searchJSON?";
     this.searchUrl = "";
@@ -29,26 +30,41 @@ class App extends Component {
         "name_equals=" +
         keyword +
         "&featureClass=P&maxRows=1&username=weknowit";
-      console.log(this.searchUrl);
-      fetch(this.searchUrl)
-        .then(res => res.json())
-        .then(
-          result => {
-            console.log(result.geonames[0]);
-            this.setState({
-              isLoaded: true,
-              items: result.geonames[0]
-            });
-          },
-          error => {
-            this.setState({
-              isLoaded: true,
-              error
-            });
-          }
-        );
+      this.callAPI();
       this.setState({ action: "city" });
+    } else {
+      this.searchUrl =
+        this.baseUrl +
+        "q=" +
+        keyword +
+        "&featureClass=P&orderby=population&maxRows=3&username=weknowit";
+      this.callAPI();
+      this.setState({ action: "country" });
     }
+    console.log(this.state.items);
+  };
+
+  callAPI() {
+    fetch(this.searchUrl)
+      .then(res => res.json())
+      .then(
+        result => {
+          this.setState({
+            isLoaded: true,
+            items: result.geonames
+          });
+        },
+        error => {
+          this.setState({
+            isLoaded: true,
+            error
+          });
+        }
+      );
+  }
+
+  handleCountrySel = () => {
+    this.setState({ action: "city" });
   };
 
   renderContent() {
@@ -62,10 +78,12 @@ class App extends Component {
         />
       );
     else if (this.state.action === "city")
+      return <City city={this.state.items} />;
+    else if (this.state.action === "country")
       return (
-        <City
-          name={this.state.items.name}
-          population={this.state.items.population}
+        <Country
+          onSelection={this.handleCountrySel}
+          cities={this.state.items}
         />
       );
   }
