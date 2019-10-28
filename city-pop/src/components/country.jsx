@@ -13,7 +13,8 @@ class Country extends Component {
           <p key={city.name}>
             <button
               className="btn btn-dark btn-xl"
-              onClick={() => this.props.onSelection()}
+              value={city.name}
+              onClick={() => this.props.onSelection({ city })}
             >
               {city.name}
             </button>

@@ -12,14 +12,15 @@ class App extends Component {
       action: "selection",
       searchType: "",
       error: null,
-      isLoaded: false,
-      items: []
+      isLoaded: true,
+      city: {},
+      cities: []
     };
     this.baseUrl = "http://api.geonames.org/searchJSON?";
     this.searchUrl = "";
   }
 
-  handleSelection = searchBy => {
+  handleSearchSelection = searchBy => {
     this.setState({ action: "search", searchType: searchBy });
   };
 
@@ -30,7 +31,7 @@ class App extends Component {
         "name_equals=" +
         keyword +
         "&featureClass=P&maxRows=1&username=weknowit";
-      this.callAPI();
+      this.callAPI(true);
       this.setState({ action: "city" });
     } else {
       this.searchUrl =
@@ -38,21 +39,28 @@ class App extends Component {
         "q=" +
         keyword +
         "&featureClass=P&orderby=population&maxRows=3&username=weknowit";
-      this.callAPI();
+      this.callAPI(false);
       this.setState({ action: "country" });
     }
-    console.log(this.state.items);
   };
 
-  callAPI() {
+  handleCitySelection = selected => {
+    this.setState({ city: selected.city, action: "city" });
+  };
+
+  callAPI(isSingleCity) {
     fetch(this.searchUrl)
       .then(res => res.json())
       .then(
         result => {
-          this.setState({
-            isLoaded: true,
-            items: result.geonames
-          });
+          this.setState(
+            isSingleCity
+              ? {
+                  isLoaded: true,
+                  city: result.geonames[0]
+                }
+              : { isLoaded: true, cities: result.geonames }
+          );
         },
         error => {
           this.setState({
@@ -63,29 +71,24 @@ class App extends Component {
       );
   }
 
-  handleCountrySel = () => {
-    this.setState({ action: "city" });
-  };
-
   renderContent() {
-    if (this.state.action === "selection")
-      return <Selector onSelection={this.handleSelection} />;
-    else if (this.state.action === "search")
+    const { error, isLoaded, action, city, cities } = this.state;
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    } else if (!isLoaded) {
+      return <div>Loading...</div>;
+    } else if (action === "selection")
+      return <Selector onSelection={this.handleSearchSelection} />;
+    else if (action === "search")
       return (
         <Search
           onSearch={this.handleSearch}
           searchType={this.state.searchType}
         />
       );
-    else if (this.state.action === "city")
-      return <City city={this.state.items} />;
-    else if (this.state.action === "country")
-      return (
-        <Country
-          onSelection={this.handleCountrySel}
-          cities={this.state.items}
-        />
-      );
+    else if (action === "city") return <City city={city} />;
+    else if (action === "country")
+      return <Country onSelection={this.handleCitySelection} cities={cities} />;
   }
 
   render() {
