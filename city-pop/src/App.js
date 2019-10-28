@@ -2,32 +2,70 @@ import React, { Component } from "react";
 import "./App.css";
 import Selector from "./components/selector";
 import Search from "./components/search";
+import City from "./components/city";
 
 class App extends Component {
-  baseURL = "http://api.geonames.org/searchJSON?";
-
   constructor(props) {
     super(props);
-    this.state = { isSearching: false, searchType: "", searchUrl: "" };
+    this.state = {
+      action: "selection",
+      searchType: "",
+      error: null,
+      isLoaded: false,
+      items: {}
+    };
+    this.baseUrl = "http://api.geonames.org/searchJSON?";
+    this.searchUrl = "";
   }
 
   handleSelection = searchBy => {
-    this.setState({ isSearching: true, searchType: searchBy });
+    this.setState({ action: "search", searchType: searchBy });
   };
 
   handleSearch = keyword => {
-    console.log(keyword);
-    this.setState({ searchUrl: this.baseURL + keyword });
+    if (this.state.searchType === "City") {
+      this.searchUrl =
+        this.baseUrl +
+        "name_equals=" +
+        keyword +
+        "&featureClass=P&maxRows=1&username=weknowit";
+      console.log(this.searchUrl);
+      fetch(this.searchUrl)
+        .then(res => res.json())
+        .then(
+          result => {
+            console.log(result.geonames[0]);
+            this.setState({
+              isLoaded: true,
+              items: result.geonames[0]
+            });
+          },
+          error => {
+            this.setState({
+              isLoaded: true,
+              error
+            });
+          }
+        );
+      this.setState({ action: "city" });
+    }
   };
 
   renderContent() {
-    if (!this.state.isSearching)
+    if (this.state.action === "selection")
       return <Selector onSelection={this.handleSelection} />;
-    else
+    else if (this.state.action === "search")
       return (
         <Search
-          //onSearch={this.handleSearch}
+          onSearch={this.handleSearch}
           searchType={this.state.searchType}
+        />
+      );
+    else if (this.state.action === "city")
+      return (
+        <City
+          name={this.state.items.name}
+          population={this.state.items.population}
         />
       );
   }

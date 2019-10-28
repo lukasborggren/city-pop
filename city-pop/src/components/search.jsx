@@ -3,9 +3,8 @@ import React, { Component } from "react";
 class Search extends Component {
   constructor(props) {
     super(props);
-    this.state = { keyword: "", error: null, isLoaded: false, items: [] };
-    this.baseUrl = "http://api.geonames.org/searchJSON?";
-    this.searchUrl = "";
+    this.state = { keyword: "" };
+    this.placeHolder = "Enter a " + this.props.searchType.toLowerCase();
   }
 
   updateKeyword(evt) {
@@ -14,59 +13,25 @@ class Search extends Component {
     });
   }
 
-  handleSearch() {
-    if (this.props.searchType === "City") {
-      this.searchUrl =
-        this.baseUrl +
-        "name_equals=" +
-        this.state.keyword +
-        "&maxRows=10&username=weknowit";
-      fetch(this.searchUrl)
-        .then(res => res.json())
-        .then(
-          result => {
-            console.log(result.geonames);
-            this.setState({
-              isLoaded: true,
-              items: result.geonames
-            });
-          },
-          error => {
-            this.setState({
-              isLoaded: true,
-              error
-            });
-          }
-        );
-    }
-    console.log(this.items);
-  }
-
   render() {
     return (
       <div>
+        <h2>Search by {this.props.searchType}</h2>
         <form>
           <input
             type="text"
             className="form-control"
-            placeholder={this.props.searchType}
+            placeholder={this.placeHolder}
             onChange={evt => this.updateKeyword(evt)}
           />
           <button
             type="button"
-            onClick={() => this.handleSearch()}
+            onClick={() => this.props.onSearch(this.state.keyword)}
             className="btn btn-primary mt-2"
           >
             Search
           </button>
         </form>
-        <ul>
-          {this.state.items.map(item => (
-            <li key={item.name}>
-              {item.name} {item.population}
-            </li>
-          ))}
-        </ul>
       </div>
     );
   }
