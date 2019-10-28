@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 
 class Country extends Component {
-  constructor(props) {
-    super(props);
-    this.first = this.props.cities[0];
-  }
   render() {
     return (
       <div>
-        <h2>Country</h2>
+        <h3>{this.props.name}</h3>
         {this.props.cities.map(city => (
           <p key={city.name}>
             <button

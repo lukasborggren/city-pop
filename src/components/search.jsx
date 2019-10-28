@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import "./search.css";
 
 class Search extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class Search extends Component {
   render() {
     return (
       <div>
-        <h2>Search by {this.props.searchType}</h2>
+        <h3>Search by {this.props.searchType}</h3>
         <form>
           <input
             type="text"
@@ -27,10 +28,8 @@ class Search extends Component {
           <button
             type="button"
             onClick={() => this.props.onSearch(this.state.keyword)}
-            className="btn btn-primary mt-2"
-          >
-            Search
-          </button>
+            className="btn btn-round"
+          />
         </form>
       </div>
     );

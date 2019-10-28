@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
-import Selector from "./components/selector";
+import LoadingBar from "react-top-loading-bar";
+import Selection from "./components/selection";
 import Search from "./components/search";
 import City from "./components/city";
 import Country from "./components/country";
@@ -9,11 +10,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      loadingBarProgress: 0,
       action: "selection",
       searchType: "",
       error: null,
       isLoaded: true,
-      city: {},
       cities: []
     };
     this.baseUrl = "http://api.geonames.org/searchJSON?";
@@ -25,13 +26,14 @@ class App extends Component {
   };
 
   handleSearch = keyword => {
+    this.setState({ isLoaded: false, loadingBarProgress: 80 });
     if (this.state.searchType === "City") {
       this.searchUrl =
         this.baseUrl +
         "name_equals=" +
         keyword +
         "&featureClass=P&maxRows=1&username=weknowit";
-      this.callAPI(true);
+      this.callAPI();
       this.setState({ action: "city" });
     } else {
       this.searchUrl =
@@ -39,28 +41,29 @@ class App extends Component {
         "q=" +
         keyword +
         "&featureClass=P&orderby=population&maxRows=3&username=weknowit";
-      this.callAPI(false);
+      this.callAPI();
       this.setState({ action: "country" });
     }
+    this.setState({ loadingBarProgress: 100 });
   };
 
   handleCitySelection = selected => {
-    this.setState({ city: selected.city, action: "city" });
+    this.setState({
+      cities: [selected.city],
+      action: "city"
+    });
   };
 
-  callAPI(isSingleCity) {
+  callAPI() {
     fetch(this.searchUrl)
       .then(res => res.json())
       .then(
         result => {
-          this.setState(
-            isSingleCity
-              ? {
-                  isLoaded: true,
-                  city: result.geonames[0]
-                }
-              : { isLoaded: true, cities: result.geonames }
-          );
+          console.log(result.geonames);
+          this.setState({
+            isLoaded: true,
+            cities: result.geonames
+          });
         },
         error => {
           this.setState({
@@ -71,32 +74,52 @@ class App extends Component {
       );
   }
 
+  onLoaderFinished = () => {
+    this.setState({ loadingBarProgress: 0 });
+  };
+
   renderContent() {
-    const { error, isLoaded, action, city, cities } = this.state;
-    if (error) {
-      return <div>Error: {error.message}</div>;
-    } else if (!isLoaded) {
-      return <div>Loading...</div>;
-    } else if (action === "selection")
-      return <Selector onSelection={this.handleSearchSelection} />;
-    else if (action === "search")
-      return (
-        <Search
-          onSearch={this.handleSearch}
-          searchType={this.state.searchType}
-        />
-      );
-    else if (action === "city") return <City city={city} />;
-    else if (action === "country")
-      return <Country onSelection={this.handleCitySelection} cities={cities} />;
+    const { error, isLoaded, action, cities } = this.state;
+    if (isLoaded) {
+      if (error) {
+        return <div>Error: {error.message}</div>;
+      } else if (action === "selection") {
+        return <Selection onSelection={this.handleSearchSelection} />;
+      } else if (action === "search") {
+        return (
+          <Search
+            onSearch={this.handleSearch}
+            searchType={this.state.searchType}
+          />
+        );
+      } else if (action === "city") {
+        return <City name={cities[0].name} population={cities[0].population} />;
+      } else if (action === "country") {
+        return (
+          <Country
+            onSelection={this.handleCitySelection}
+            name={cities[0].countryName}
+            cities={cities}
+          />
+        );
+      }
+    }
   }
 
   render() {
     return (
       <React.Fragment>
         <div className="App">
+          <LoadingBar
+            progress={this.state.loadingBarProgress}
+            height={4}
+            color="rgb(41, 120, 160)"
+            onLoaderFinished={() => this.onLoaderFinished()}
+          />
           <header className="App-header">
-            <h1>CityPop</h1>
+            <h1>
+              <a href={"/"}>CityPop</a>
+            </h1>
             {this.renderContent()}
           </header>
         </div>

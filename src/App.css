@@ -1,16 +1,21 @@
 .App {
   text-align: center;
+  background-image: url("./images/city.jpg");
+  background-size: cover;
+  background-color: white;
 }
 
 .App-header {
-  background-image: url("./images/city.jpg");
-  background-size: cover;
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 14%;
-  font-size: calc(10px + 2vmin);
+  padding-top: 8%;
+  font-size: calc(16px + 2vmin);
   color: black;
+}
+
+a:link, a:visited, a:hover, a:active {
+  color: black !important;
+  text-decoration: none !important;
 }

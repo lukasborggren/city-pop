@@ -4,8 +4,8 @@ class City extends Component {
   render() {
     return (
       <div>
-        <h2>{this.props.city.name}</h2>
-        <h4>Population: {this.props.city.population}</h4>
+        <h3>{this.props.name}</h3>
+        <h5>Population: {this.props.population}</h5>
       </div>
     );
   }
