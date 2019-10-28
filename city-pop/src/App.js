@@ -4,25 +4,32 @@ import Selector from "./components/selector";
 import Search from "./components/search";
 
 class App extends Component {
-  state = {
-    isSearching: false,
-    searchType: ""
-  };
+  baseURL = "http://api.geonames.org/searchJSON?";
 
   constructor(props) {
     super(props);
-    this.state = { isSearching: false };
+    this.state = { isSearching: false, searchType: "", searchUrl: "" };
   }
 
   handleSelection = searchBy => {
-    this.setState({ isSearching: true });
-    this.setState({ searchType: searchBy });
+    this.setState({ isSearching: true, searchType: searchBy });
+  };
+
+  handleSearch = keyword => {
+    console.log(keyword);
+    this.setState({ searchUrl: this.baseURL + keyword });
   };
 
   renderContent() {
     if (!this.state.isSearching)
       return <Selector onSelection={this.handleSelection} />;
-    else return <Search searchType={this.state.searchType} />;
+    else
+      return (
+        <Search
+          //onSearch={this.handleSearch}
+          searchType={this.state.searchType}
+        />
+      );
   }
 
   render() {

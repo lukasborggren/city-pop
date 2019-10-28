@@ -1,14 +1,6 @@
 import React, { Component } from "react";
 
 class Selector extends Component {
-  onCityClick() {
-    console.log("City");
-  }
-
-  onCountryClick() {
-    console.log("Country");
-  }
-
   render() {
     return (
       <div>
