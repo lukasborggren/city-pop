@@ -14,6 +14,7 @@ class Search extends Component {
 
   componentDidMount() {
     this.refs.searchBar.focus();
+    console.log("mounted");
   }
 
   updateKeyword(evt) {
@@ -32,7 +33,7 @@ class Search extends Component {
     return (
       <div>
         <h3 className="sub-header">Search by {this.props.searchType}</h3>
-        <form onSubmit={() => this.props.onSearch(this.state.keyword)}>
+        <form>
           <input
             ref="searchBar"
             className="form-control search-field"
@@ -40,7 +41,11 @@ class Search extends Component {
             placeholder={this.placeHolder}
             onChange={evt => this.updateKeyword(evt)}
           />
-          <button type="submit" className="btn btn-round" />
+          <button
+            type="button"
+            className="btn btn-round"
+            onClick={() => this.props.onSearch(this.state.keyword)}
+          />
         </form>
         {this.checkForError()}
       </div>

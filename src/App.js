@@ -26,23 +26,26 @@ class App extends Component {
   };
 
   handleSearch = keyword => {
-    this.setState({ error: false, isLoaded: false, loadingBarProgress: 80 });
-    if (this.state.searchType === "City") {
-      this.searchUrl =
-        this.baseUrl +
-        "name_equals=" +
-        keyword +
-        "&featureClass=P&maxRows=1&username=weknowit";
-      this.callAPI("city");
-    } else {
-      this.searchUrl =
-        this.baseUrl +
-        "q=" +
-        keyword +
-        "&featureClass=P&orderby=population&maxRows=3&username=weknowit";
-      this.callAPI("country");
+    if (keyword === "") this.setState({ error: true });
+    else {
+      this.setState({ error: false, isLoaded: false, loadingBarProgress: 80 });
+      if (this.state.searchType === "City") {
+        this.searchUrl =
+          this.baseUrl +
+          "name_equals=" +
+          keyword +
+          "&featureClass=P&maxRows=1&username=weknowit";
+        this.callAPI("city");
+      } else {
+        this.searchUrl =
+          this.baseUrl +
+          "q=" +
+          keyword +
+          "&featureClass=P&orderby=population&maxRows=3&username=weknowit";
+        this.callAPI("country");
+      }
+      this.setState({ loadingBarProgress: 100 });
     }
-    this.setState({ loadingBarProgress: 100 });
   };
 
   callAPI(action) {
