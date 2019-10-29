@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import NumberFormat from "react-number-format";
 import "../App.css";
 
+/*
+Component viewing a city's name and its population.
+*/
 class City extends Component {
   render() {
     return (

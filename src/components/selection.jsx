@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import "../App.css";
 
+/*
+Component enabling the option to search by either country or city.
+ */
 class Selection extends Component {
   render() {
     return (

@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import "../App.css";
 
+/*
+Component viewing a country's name and the its three biggest cities.
+Clicking a city renders a city component for the specific city.
+*/
 class Country extends Component {
   render() {
     return (

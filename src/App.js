@@ -1,11 +1,14 @@
 import React, { Component } from "react";
-import "./App.css";
 import LoadingBar from "react-top-loading-bar";
 import Selection from "./components/selection";
 import Search from "./components/search";
 import City from "./components/city";
 import Country from "./components/country";
+import "./App.css";
 
+/*
+The app main component, handling the majority of all logic and rendering.
+ */
 class App extends Component {
   constructor(props) {
     super(props);
@@ -21,10 +24,12 @@ class App extends Component {
     this.searchUrl = "";
   }
 
+  //Specifies what type of search is to be made.
   handleSearchSelection = searchBy => {
     this.setState({ action: "search", searchType: searchBy });
   };
 
+  //Handles the search procedure by forming an eligible URL and starting the loading bar.
   handleSearch = keyword => {
     if (keyword === "") this.setState({ error: true });
     else {
@@ -48,6 +53,7 @@ class App extends Component {
     }
   };
 
+  //Utilizes the search URL to retrieve city/cities from API.
   callAPI(action) {
     fetch(this.searchUrl)
       .then(res => res.json())
@@ -76,6 +82,7 @@ class App extends Component {
       );
   }
 
+  //Handles the selection of a city in a country.
   handleCitySelection = selected => {
     this.setState({
       action: "city",
@@ -83,10 +90,12 @@ class App extends Component {
     });
   };
 
+  //Specifies the action when the loading bar is finished.
   onLoaderFinished = () => {
     this.setState({ loadingBarProgress: 0 });
   };
 
+  //Conditionally renders main content based on the current state's action.
   renderContent() {
     const { error, isLoaded, action, cities, searchType } = this.state;
     if (isLoaded) {
