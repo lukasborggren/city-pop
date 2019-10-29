@@ -18,6 +18,12 @@ class Search extends Component {
     });
   }
 
+  checkForError() {
+    if (this.props.error) {
+      return <p>Error som fan!!</p>;
+    }
+  }
+
   render() {
     return (
       <div>
@@ -25,13 +31,14 @@ class Search extends Component {
         <form onSubmit={() => this.props.onSearch(this.state.keyword)}>
           <input
             ref="searchBar"
-            type="text"
             className="form-control search-field"
+            type="text"
             placeholder={this.placeHolder}
             onChange={evt => this.updateKeyword(evt)}
           />
           <button type="submit" className="btn btn-round" />
         </form>
+        {this.checkForError()}
       </div>
     );
   }

@@ -13,7 +13,7 @@ class App extends Component {
       loadingBarProgress: 0,
       action: "selection",
       searchType: "",
-      error: null,
+      error: false,
       isLoaded: true,
       cities: []
     };
@@ -60,15 +60,22 @@ class App extends Component {
       .then(
         result => {
           console.log(result.geonames);
-          this.setState({
-            isLoaded: true,
-            cities: result.geonames
-          });
+          this.setState(
+            result.geonames.length
+              ? {
+                  isLoaded: true,
+                  cities: result.geonames
+                }
+              : {
+                  isLoaded: true,
+                  error: true
+                }
+          );
         },
-        error => {
+        () => {
           this.setState({
             isLoaded: true,
-            error
+            error: true
           });
         }
       );
@@ -81,20 +88,19 @@ class App extends Component {
   renderContent() {
     const { error, isLoaded, action, cities } = this.state;
     if (isLoaded) {
-      if (error) {
-        return <div>Error: {error.message}</div>;
-      } else if (action === "selection") {
+      if (action === "selection") {
         return <Selection onSelection={this.handleSearchSelection} />;
       } else if (action === "search") {
         return (
           <Search
+            error={error}
             onSearch={this.handleSearch}
             searchType={this.state.searchType}
           />
         );
-      } else if (action === "city") {
+      } else if (action === "city" && !error) {
         return <City name={cities[0].name} population={cities[0].population} />;
-      } else if (action === "country") {
+      } else if (action === "country" && !error) {
         return (
           <Country
             onSelection={this.handleCitySelection}
