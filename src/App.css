@@ -66,6 +66,12 @@
   background-color: rgb(240, 240, 240) !important;
 }
 
+.error-text {
+  color: rgb(184, 12, 9);
+  margin-top: 1vh;
+  margin-bottom: 10vh;
+}
+
 .population-box {
   height: 16vh;
   min-height: 90px;

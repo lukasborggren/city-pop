@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import NumberFormat from "react-number-format";
 import "../App.css";
 
 class City extends Component {
@@ -8,7 +9,12 @@ class City extends Component {
         <h3 className="sub-header">{this.props.name}</h3>
         <div className="population-box">
           <p className="population-header">Population</p>
-          <h3 className="sub-header">{this.props.population}</h3>
+          <NumberFormat
+            className="sub-header"
+            value={this.props.population}
+            displayType={"text"}
+            thousandSeparator={" "}
+          />
         </div>
       </div>
     );

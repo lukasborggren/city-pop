@@ -6,6 +6,10 @@ class Search extends Component {
     super(props);
     this.state = { keyword: "" };
     this.placeHolder = "Enter a " + this.props.searchType.toLowerCase();
+    this.errorMessage =
+      "The " +
+      this.props.searchType.toLowerCase() +
+      " couldn't be found – try again";
   }
 
   componentDidMount() {
@@ -20,7 +24,7 @@ class Search extends Component {
 
   checkForError() {
     if (this.props.error) {
-      return <p>Error som fan!!</p>;
+      return <p className="error-text">{this.errorMessage}</p>;
     }
   }
 

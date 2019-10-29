@@ -10,11 +10,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loadingBarProgress: 0,
-      action: "selection",
-      searchType: "",
       error: false,
       isLoaded: true,
+      action: "selection",
+      loadingBarProgress: 0,
+      searchType: "",
       cities: []
     };
     this.baseUrl = "http://api.geonames.org/searchJSON?";
@@ -26,35 +26,26 @@ class App extends Component {
   };
 
   handleSearch = keyword => {
-    this.setState({ isLoaded: false, loadingBarProgress: 80 });
+    this.setState({ error: false, isLoaded: false, loadingBarProgress: 80 });
     if (this.state.searchType === "City") {
       this.searchUrl =
         this.baseUrl +
         "name_equals=" +
         keyword +
         "&featureClass=P&maxRows=1&username=weknowit";
-      this.callAPI();
-      this.setState({ action: "city" });
+      this.callAPI("city");
     } else {
       this.searchUrl =
         this.baseUrl +
         "q=" +
         keyword +
         "&featureClass=P&orderby=population&maxRows=3&username=weknowit";
-      this.callAPI();
-      this.setState({ action: "country" });
+      this.callAPI("country");
     }
     this.setState({ loadingBarProgress: 100 });
   };
 
-  handleCitySelection = selected => {
-    this.setState({
-      cities: [selected.city],
-      action: "city"
-    });
-  };
-
-  callAPI() {
+  callAPI(action) {
     fetch(this.searchUrl)
       .then(res => res.json())
       .then(
@@ -64,29 +55,37 @@ class App extends Component {
             result.geonames.length
               ? {
                   isLoaded: true,
+                  action: action,
                   cities: result.geonames
                 }
               : {
-                  isLoaded: true,
-                  error: true
+                  error: true,
+                  isLoaded: true
                 }
           );
         },
         () => {
           this.setState({
-            isLoaded: true,
-            error: true
+            error: true,
+            isLoaded: true
           });
         }
       );
   }
+
+  handleCitySelection = selected => {
+    this.setState({
+      action: "city",
+      cities: [selected.city]
+    });
+  };
 
   onLoaderFinished = () => {
     this.setState({ loadingBarProgress: 0 });
   };
 
   renderContent() {
-    const { error, isLoaded, action, cities } = this.state;
+    const { error, isLoaded, action, cities, searchType } = this.state;
     if (isLoaded) {
       if (action === "selection") {
         return <Selection onSelection={this.handleSearchSelection} />;
@@ -95,12 +94,12 @@ class App extends Component {
           <Search
             error={error}
             onSearch={this.handleSearch}
-            searchType={this.state.searchType}
+            searchType={searchType}
           />
         );
-      } else if (action === "city" && !error) {
+      } else if (action === "city") {
         return <City name={cities[0].name} population={cities[0].population} />;
-      } else if (action === "country" && !error) {
+      } else if (action === "country") {
         return (
           <Country
             onSelection={this.handleCitySelection}
