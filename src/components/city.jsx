@@ -1,11 +1,15 @@
 import React, { Component } from "react";
+import "../App.css";
 
 class City extends Component {
   render() {
     return (
       <div>
-        <h3>{this.props.name}</h3>
-        <h5>Population: {this.props.population}</h5>
+        <h3 className="sub-header">{this.props.name}</h3>
+        <div className="population-box">
+          <p className="population-header">Population</p>
+          <h3 className="sub-header">{this.props.population}</h3>
+        </div>
       </div>
     );
   }

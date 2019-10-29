@@ -118,10 +118,12 @@ class App extends Component {
           />
           <header className="App-header">
             <h1>
-              <a href={"/"}>CityPop</a>
+              <a className="header-link" href={"/"}>
+                CityPop
+              </a>
             </h1>
-            {this.renderContent()}
           </header>
+          <div className="App-content">{this.renderContent()}</div>
         </div>
       </React.Fragment>
     );

@@ -1,21 +1,82 @@
 .App {
-  text-align: center;
-  background-image: url("./images/city.jpg");
-  background-size: cover;
-  background-color: white;
-}
-
-.App-header {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 8%;
-  font-size: calc(16px + 2vmin);
-  color: black;
+  text-align: center;
+  background-image: url("./images/city.jpg");
+  background-size: cover;
+  background-color: rgb(255, 255, 255);
 }
 
-a:link, a:visited, a:hover, a:active {
-  color: black !important;
-  text-decoration: none !important;
+.App-header {
+  margin-top: 14vh;
+}
+
+.App-content {
+  margin-top: 4vh;
+  width: 40%;
+  min-width: 420px;
+  min-height: 60vh;
+}
+
+.header-link{
+  color: rgb(0, 0, 0);
+  font-size: calc(52px + 2vmin);
+}
+
+.header-link:hover {
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+.sub-header {
+  font-size: calc(20px + 2vmin);
+  padding-bottom: 2vh;
+}
+
+.btn-dark-selection {
+  height: 90px;
+  width: 40%;
+  min-width: 154px;
+  margin-top: 4vh;
+}
+
+.btn-dark-city {
+  height: 8vh;
+  min-height: 40px;
+  width: 36%;
+  min-width: 154px;
+}
+
+.btn-round{
+  height: 50px;
+  width: 50px;
+  margin-top: 2vh;
+  padding: 10px !important;
+  background-image: url(./images/magnifying.ico);
+  background-color: white !important;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-origin: content-box;
+  border-radius: 50% !important;
+}
+
+.btn-round:hover{
+  background-color: rgb(240, 240, 240) !important;
+}
+
+.population-box {
+  height: 16vh;
+  min-height: 90px;
+  width: 60%;
+  margin: auto;
+  border-style: solid;
+  padding: 1vh;
+  border-radius: 6px;
+  overflow: auto;
+}
+
+.population-header {
+  margin-bottom: 2vh;
 }
