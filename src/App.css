@@ -15,8 +15,7 @@
 
 .App-content {
   margin-top: 4vh;
-  width: 40%;
-  min-width: 420px;
+  width: calc(90% - 40vw);
   min-height: 60vh;
 }
 
@@ -31,21 +30,22 @@
 }
 
 .sub-header {
-  font-size: calc(20px + 2vmin);
+  font-size: calc(18px + 2vmin);
   padding-bottom: 2vh;
 }
 
 .btn-dark-selection {
-  height: 90px;
-  width: 40%;
-  min-width: 154px;
+  height: 13vh;
+  min-height: 82px;
+  width: 38%;
+  min-width: 72px;
   margin-top: 4vh;
 }
 
 .btn-dark-city {
   height: 8vh;
   min-height: 40px;
-  width: 36%;
+  width: 30%;
   min-width: 154px;
 }
 
@@ -66,6 +66,11 @@
   background-color: rgb(240, 240, 240) !important;
 }
 
+.search-field{
+  width: calc(100% - 10vw) !important;
+  margin: auto;
+}
+
 .error-text {
   color: rgb(184, 12, 9);
   margin-top: 1vh;
@@ -75,7 +80,7 @@
 .population-box {
   height: 16vh;
   min-height: 90px;
-  width: 60%;
+  width: 44%;
   margin: auto;
   border-style: solid;
   padding: 1vh;
