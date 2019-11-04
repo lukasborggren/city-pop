@@ -23,11 +23,11 @@
 .header-link{
   color: rgb(0, 0, 0);
   font-size: calc(52px + 2vmin);
-}
-
-.header-link:hover {
-  color: rgb(0, 0, 0);
-  text-decoration: none;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none !important;
 }
 
 .sub-header {

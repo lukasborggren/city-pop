@@ -24,6 +24,11 @@ class App extends Component {
     this.searchUrl = "";
   }
 
+  //Sets the current state to selection when the home link is clicked.
+  handleHomeClick = () => {
+    this.setState({ action: "selection", error: false });
+  };
+
   //Specifies what type of search is to be made.
   handleSearchSelection = searchBy => {
     this.setState({ action: "search", searchType: searchBy });
@@ -134,11 +139,9 @@ class App extends Component {
             onLoaderFinished={() => this.onLoaderFinished()}
           />
           <header className="App-header">
-            <h1>
-              <a className="header-link" href={"/"}>
-                CityPop
-              </a>
-            </h1>
+            <button className="header-link" onClick={this.handleHomeClick}>
+              CityPop
+            </button>
           </header>
           <div className="App-content">{this.renderContent()}</div>
         </div>
