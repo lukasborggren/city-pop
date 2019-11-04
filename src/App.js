@@ -31,7 +31,7 @@ class App extends Component {
 
   //Handles the search procedure by forming an eligible URL and starting the loading bar.
   handleSearch = keyword => {
-    if (keyword === "") this.setState({ error: true });
+    if (keyword.trim() === "") this.setState({ error: true });
     else {
       this.setState({ error: false, isLoaded: false, loadingBarProgress: 80 });
       if (this.state.searchType === "City") {
